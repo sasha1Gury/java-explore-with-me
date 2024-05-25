@@ -13,6 +13,7 @@
 	<name>Explore With Me</name>
 	<modules>
 		<module>stat-service</module>
+		<module>stat-service/stat-server</module>
 	</modules>
 
 	<groupId>ru.practicum</groupId>
