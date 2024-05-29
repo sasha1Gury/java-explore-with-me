@@ -24,15 +24,15 @@ public class StatServerService {
     public List<ViewStatisticDto> getStatistic(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
         if (uris.isEmpty()) {
             if (!unique) {
-                return statServerRepository.findStatistic(start, end);
+                return statServerRepository.findAllStatistic(start, end);
             } else {
-                return statServerRepository.findStatisticUniqueIp(start, end);
+                return statServerRepository.findAllStatisticUniqueIp(start, end);
             }
         } else {
             if (!unique) {
-                return statServerRepository.findStatisticForUriList(start, end, uris);
+                return statServerRepository.findAllStatisticForUriList(start, end, uris);
             } else {
-                return statServerRepository.findStatisticForUriListAndUniqueIp(start, end, uris);
+                return statServerRepository.findAllStatisticForUriListAndUniqueIp(start, end, uris);
             }
         }
     }
