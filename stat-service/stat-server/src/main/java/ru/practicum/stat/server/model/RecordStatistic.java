@@ -12,10 +12,10 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Builder
-@Table(name = "meta_statistic")
+@Table(name = "record_statistic")
 @NoArgsConstructor
 @AllArgsConstructor
-public class MetaStatistic {
+public class RecordStatistic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
