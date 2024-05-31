@@ -24,14 +24,14 @@ public class StatServerController {
 
     @PostMapping("/hit")
     @ResponseStatus(HttpStatus.CREATED)
-    public void RequestEndpoint(@RequestBody @Validated RecordStatisticDto recordStatisticDto) {
+    public void saveStatistic(@RequestBody @Validated RecordStatisticDto recordStatisticDto) {
         log.info("New hit: {}", recordStatisticDto);
         statServerService.save(recordStatisticDto);
     }
 
     @GetMapping("/stats")
     @ResponseStatus(HttpStatus.OK)
-    public List<ViewStatisticDto> getStatistic (@RequestParam @DateTimeFormat(pattern = DATE_TIME_FORMAT)LocalDateTime start,
+    public List<ViewStatisticDto> getStatistic(@RequestParam @DateTimeFormat(pattern = DATE_TIME_FORMAT)LocalDateTime start,
                                                 @RequestParam @DateTimeFormat(pattern = DATE_TIME_FORMAT)LocalDateTime end,
                                                 @RequestParam(defaultValue = "") List<String> uris,
                                                 @RequestParam(defaultValue = "false") boolean unique) throws ValidationException {
