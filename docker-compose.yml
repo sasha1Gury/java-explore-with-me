@@ -5,6 +5,11 @@ services:
     container_name: ewm-stats-db
     ports:
       - "6541:5432"
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "postgres", "-h", "localhost", "-p", "5432" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     environment:
       - POSTGRES_DB=explore_with_me
       - POSTGRES_USER=share
