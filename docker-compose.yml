@@ -1,5 +1,8 @@
 version: '3.8'
 services:
+  app:
+    build: .
+    command: [ "./wait-for-it.sh", "localhost:9090", "--timeout=120", "--", "your-command" ]
   stats-server:
     build: ./stat-service/stat-server
     container_name: ewm-stat-server
