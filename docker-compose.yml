@@ -1,5 +1,15 @@
 version: '3.8'
 services:
+  stats-db:
+    image: postgres:14-alpine
+    container_name: ewm-stats-db
+    ports:
+      - "6541:5432"
+    environment:
+      - POSTGRES_DB=explore_with_me
+      - POSTGRES_USER=share
+      - POSTGRES_PASSWORD=password
+
   stats-server:
     build: ./stat-service/stat-server
     container_name: ewm-stat-server
@@ -12,16 +22,6 @@ services:
       - SPRING_DATASOURCE_USERNAME=share
       - SPRING_DATASOURCE_PASSWORD=password
       - SPRING_PROFILES_ACTIVE=dev
-
-  stats-db:
-    image: postgres:14-alpine
-    container_name: ewm-stats-db
-    ports:
-      - "6541:5432"
-    environment:
-      - POSTGRES_DB=explore_with_me
-      - POSTGRES_USER=share
-      - POSTGRES_PASSWORD=password
 
   ewm-service:
     build: ./ewm-service
