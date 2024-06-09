@@ -7,6 +7,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -45,5 +46,10 @@ public class AppContextEventListener {
                     }
                 });
         System.out.println("******************************************************************************");
+    }
+
+    @PostConstruct
+    public void print() {
+        System.out.println("akjsdhflkajshdflkajshflaskdjhfalskdjfhlaskdjhf");
     }
 }

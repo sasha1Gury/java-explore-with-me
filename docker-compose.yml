@@ -4,7 +4,7 @@ services:
     image: postgres:14-alpine
     container_name: ewm-stats-db
     ports:
-      - "6541:5432"
+      - "6542:5433"
     environment:
       - POSTGRES_DB=explore_with_me
       - POSTGRES_USER=share
