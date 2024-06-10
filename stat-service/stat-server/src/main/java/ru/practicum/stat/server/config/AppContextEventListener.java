@@ -47,9 +47,4 @@ public class AppContextEventListener {
                 });
         System.out.println("******************************************************************************");
     }
-
-    @PostConstruct
-    public void print() {
-        System.out.println("akjsdhflkajshdflkajshflaskdjhfalskdjfhlaskdjhf");
-    }
 }
