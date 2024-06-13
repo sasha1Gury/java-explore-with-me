@@ -14,7 +14,6 @@ import ru.practicum.ewm.service.event.service.EventService;
 import ru.practicum.ewm.service.request.service.ParticipationService;
 import ru.practicum.ewm.service.request.dto.EventRequestStatusUpdateRequest;
 import ru.practicum.ewm.service.request.dto.EventRequestStatusUpdateResult;
-import ru.practicum.ewm.service.request.dto.ParticipationDtoMapper;
 import ru.practicum.ewm.service.request.dto.ParticipationRequestDto;
 
 
@@ -70,7 +69,7 @@ public class EventPrivateController {
     public List<ParticipationRequestDto> getRequestsByEventIdAndInitiatorId(@Positive @PathVariable long userId,
                                                                             @Positive @PathVariable long eventId) {
         log.info("Get participation requests for event: userId = {}, eventId = {}", userId, eventId);
-        return ParticipationDtoMapper.toParticipationRequestDtoList(participationService.getRequestsByEventIdAndInitiatorId(eventId, userId));
+        return participationService.getRequestsByEventIdAndInitiatorId(eventId, userId);
     }
 
     @PatchMapping("/{userId}/events/{eventId}/requests")
