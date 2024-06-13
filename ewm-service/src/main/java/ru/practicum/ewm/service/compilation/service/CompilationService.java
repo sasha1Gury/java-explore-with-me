@@ -43,7 +43,7 @@ public class CompilationService {
             return compilationRepository.findAll(page).getContent()
                     .stream()
                     .map(compilation -> mapper.map(compilation, CompilationDto.class))
-                    .collect(Collectors.toList());;
+                    .collect(Collectors.toList());
         }
     }
 
