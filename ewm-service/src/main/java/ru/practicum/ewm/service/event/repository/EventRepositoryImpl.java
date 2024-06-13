@@ -54,20 +54,6 @@ public class EventRepositoryImpl {
         return entityManager.createQuery(cbQuery).setFirstResult(from).setMaxResults(size).getResultList();
     }
 
-    /**
-     * Выборка из БД событий с возможностью фильтрации, публичный эндпоинт
-     *
-     * @param text             текст для поиска в содержимом аннотации и подробном описании события
-     * @param categoriesIdList список идентификаторов категорий в которых будет вестись поиск
-     * @param paid             поиск только платных/бесплатных событий
-     * @param rangeStart       дата и время не раньше которых должно произойти событие
-     * @param rangeEnd         дата и время не позже которых должно произойти событие
-     * @param onlyAvailable    только события у которых не исчерпан лимит запросов на участие
-     * @param sort             Вариант сортировки: по дате события или по количеству просмотров, аvailable values : EVENT_DATE, VIEWS
-     * @param from             количество событий, которые нужно пропустить для формирования текущего набора
-     * @param size             количество событий в наборе
-     * @return список событий Event
-     */
     public List<Event> findAllEventsByFilterPublic(String text,
                                                    List<Integer> categoriesIdList,
                                                    Boolean paid,
