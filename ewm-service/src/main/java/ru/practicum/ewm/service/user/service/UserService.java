@@ -6,7 +6,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 import ru.practicum.ewm.service.user.dto.UserDto;
 import ru.practicum.ewm.service.user.model.User;
 import ru.practicum.ewm.service.user.repository.UserRepository;
@@ -32,7 +31,7 @@ public class UserService {
     }
 
     public List<UserDto> getAllUsers(List<Long> userIdList, int from, int size) {
-        Pageable page = PageRequest.of(from/size, size);
+        Pageable page = PageRequest.of(from / size, size);
 
         if (userIdList == null || userIdList.isEmpty()) {
             return userRepository.findAll(page).getContent().stream()

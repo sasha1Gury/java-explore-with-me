@@ -15,7 +15,6 @@ import ru.practicum.ewm.service.exceptions.CategoryNameNotUniqueException;
 import ru.practicum.ewm.service.exceptions.CategoryNotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,7 +32,7 @@ public class CategoryService {
     }
 
     public List<CategoryDto> getAllCategories(int from, int size) {
-        Pageable page = PageRequest.of(from/size, size);
+        Pageable page = PageRequest.of(from / size, size);
         return categoryRepository.findAll(page).getContent()
                 .stream()
                 .map(category ->  mapper.map(category, CategoryDto.class))

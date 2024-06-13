@@ -33,7 +33,7 @@ public class CompilationService {
     }
 
     public List<CompilationDto> getAllCompilations(Boolean pinned, int from, int size) {
-        Pageable page = PageRequest.of(from/size, size);
+        Pageable page = PageRequest.of(from / size, size);
         if (pinned != null) {
             return compilationRepository.findByPinned(pinned, page)
                     .stream()

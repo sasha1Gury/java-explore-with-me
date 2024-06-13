@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class EventDtoMapper {
     private static final ModelMapper mapper = new ModelMapper();
+
     public static List<EventShortDto> toEventShortDtoList(Collection<Event> eventList) {
         if (eventList != null) {
             List<EventShortDto> eventShortDtoList = new ArrayList<>();
