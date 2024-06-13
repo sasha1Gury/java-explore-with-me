@@ -5,16 +5,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.practicum.ewm.service.common.EwmConstants;
 import ru.practicum.ewm.service.exceptions.*;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ValidationException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @RestControllerAdvice
 @Slf4j
 public class ErrorHandler {
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
+
 
     @ExceptionHandler({ValidationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -24,7 +27,7 @@ public class ErrorHandler {
                 .status("BAD_REQUEST")
                 .reason("error")
                 .message(e.getMessage())
-                .timestamp(LocalDateTime.now().format(EwmConstants.DATE_TIME_FORMATTER))
+                .timestamp(LocalDateTime.now().format(DATE_TIME_FORMATTER))
                 .build();
     }
 
@@ -40,7 +43,7 @@ public class ErrorHandler {
                 .status("NOT_FOUND")
                 .reason("error")
                 .message(e.getMessage())
-                .timestamp(LocalDateTime.now().format(EwmConstants.DATE_TIME_FORMATTER))
+                .timestamp(LocalDateTime.now().format(DATE_TIME_FORMATTER))
                 .build();
     }
 
@@ -61,7 +64,7 @@ public class ErrorHandler {
                 .status("CONFLICT")
                 .reason("error")
                 .message(e.getMessage())
-                .timestamp(LocalDateTime.now().format(EwmConstants.DATE_TIME_FORMATTER))
+                .timestamp(LocalDateTime.now().format(DATE_TIME_FORMATTER))
                 .build();
     }
 
@@ -75,7 +78,7 @@ public class ErrorHandler {
                 .status("NOT_FOUND")
                 .reason("Внутренняя ошибка сервера")
                 .message(e.getMessage())
-                .timestamp(LocalDateTime.now().format(EwmConstants.DATE_TIME_FORMATTER))
+                .timestamp(LocalDateTime.now().format(DATE_TIME_FORMATTER))
                 .build();
     }
 }
