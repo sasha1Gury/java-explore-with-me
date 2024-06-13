@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.service.compilation.dto.CompilationDto;
-import ru.practicum.ewm.service.compilation.dto.CompilationDtoMapper;
 import ru.practicum.ewm.service.compilation.dto.NewCompilationDto;
 import ru.practicum.ewm.service.compilation.dto.UpdateCompilationRequest;
 import ru.practicum.ewm.service.compilation.service.CompilationService;
@@ -26,7 +25,7 @@ public class CompilationAdminController {
     @ResponseStatus(HttpStatus.CREATED)
     public CompilationDto create(@Valid @RequestBody NewCompilationDto newCompilationDto) {
         log.info("Admin create compilation: {}", newCompilationDto);
-        return CompilationDtoMapper.toCompilationDto(compilationService.create(newCompilationDto));
+        return compilationService.create(newCompilationDto);
     }
 
     @PatchMapping("/{compilationId}")
@@ -34,7 +33,7 @@ public class CompilationAdminController {
     public CompilationDto update(@RequestBody UpdateCompilationRequest updateCompilationRequest,
                                  @Positive @PathVariable long compilationId) {
         log.info("Admin update compilation: {}, compilationId = {}", updateCompilationRequest, compilationId);
-        return CompilationDtoMapper.toCompilationDto(compilationService.update(updateCompilationRequest, compilationId));
+        return compilationService.update(updateCompilationRequest, compilationId);
     }
 
     @DeleteMapping("/{compilationId}")
