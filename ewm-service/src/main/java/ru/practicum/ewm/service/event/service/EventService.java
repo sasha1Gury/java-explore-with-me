@@ -18,6 +18,7 @@ import ru.practicum.stat.client.StatisticClient;
 import ru.practicum.stat.common.dto.RecordStatisticDto;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -86,6 +87,7 @@ public class EventService {
 
         if (updateRequest.getEventDate() != null) {
             LocalDateTime newEventDate = LocalDateTime.parse(updateRequest.getEventDate(), DATE_TIME_FORMATTER);
+            newEventDate = newEventDate.truncatedTo(ChronoUnit.SECONDS);
             validateEventDate(newEventDate);
             storageEvent.setEventDate(newEventDate);
         }
@@ -104,7 +106,8 @@ public class EventService {
     }
 
     public EventFullDto createEvent(NewEventDto newEventDto, long userId) {
-        LocalDateTime eventDate = LocalDateTime.parse(newEventDto.getEventDate(), DATE_TIME_FORMATTER);
+        LocalDateTime eventDate = LocalDateTime.parse(newEventDto.getEventDate(), DATE_TIME_FORMATTER)
+                .truncatedTo(ChronoUnit.SECONDS);
         if (eventDate.isBefore(LocalDateTime.now().plusHours(2))) {
             throw new EventUpdateException("Дата начала изменяемого события должна быть не ранее чем за два часа от даты публикации");
         }
@@ -119,8 +122,8 @@ public class EventService {
                 .participantLimit(newEventDto.getParticipantLimit())
                 .requestModeration(newEventDto.isRequestModeration())
                 .title(newEventDto.getTitle())
-                .createdOn(LocalDateTime.now())
-                .publishedOn(LocalDateTime.now())
+                .createdOn(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS))
+                .publishedOn(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS))
                 .initiator(userService.getUserById(userId))
                 .state(EventState.PENDING)
                 .build();
@@ -144,7 +147,8 @@ public class EventService {
         }
 
         if (eventRequest.getEventDate() != null) {
-            LocalDateTime eventRequestDate = LocalDateTime.parse(eventRequest.getEventDate(), DATE_TIME_FORMATTER);
+            LocalDateTime eventRequestDate = LocalDateTime.parse(eventRequest.getEventDate(), DATE_TIME_FORMATTER)
+                    .truncatedTo(ChronoUnit.SECONDS);
             if (eventRequestDate.isBefore(LocalDateTime.now().plusHours(2))) {
                 throw new EventUpdateException("Дата начала изменяемого события должна быть не ранее чем за два часа от даты публикации");
             }
@@ -173,7 +177,7 @@ public class EventService {
             case "PUBLISH_EVENT":
                 validateEventState(storageEvent, "Cannot publish the event because it's not in the right state: ");
                 storageEvent.setState(EventState.PUBLISHED);
-                storageEvent.setPublishedOn(LocalDateTime.now());
+                storageEvent.setPublishedOn(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
                 break;
             case "SEND_TO_REVIEW":
                 storageEvent.setState(EventState.PENDING);
@@ -233,12 +237,12 @@ public class EventService {
     }
 
     private void recordStatistics(String requestUri, String remoteIp) {
-        StatisticClient statClient = new StatisticClient(requestUri);
+        StatisticClient statClient = new StatisticClient("http://localhost:9090");
         RecordStatisticDto stat = RecordStatisticDto.builder()
                 .app("ewm-main-service")
                 .uri(requestUri)
                 .ip(remoteIp)
-                .timestamp(LocalDateTime.now().format(DATE_TIME_FORMATTER))
+                .timestamp(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS).format(DATE_TIME_FORMATTER))
                 .build();
 
         statClient.sendHit(stat);
