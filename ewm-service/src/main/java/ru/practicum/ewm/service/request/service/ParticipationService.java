@@ -1,6 +1,7 @@
 package ru.practicum.ewm.service.request.service;
 
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import ru.practicum.ewm.service.event.dto.EventFullDto;
@@ -11,7 +12,7 @@ import ru.practicum.ewm.service.event.service.EventService;
 import ru.practicum.ewm.service.exceptions.*;
 import ru.practicum.ewm.service.request.dto.ParticipationRequestDto;
 import ru.practicum.ewm.service.request.repository.ParticipationRepository;
-import ru.practicum.ewm.service.request.dto.ParticipationDtoMapper;
+import ru.practicum.ewm.service.request.model.ParticipationDtoMapper;
 import ru.practicum.ewm.service.request.model.Participation;
 import ru.practicum.ewm.service.request.dto.EventRequestStatusUpdateRequest;
 import ru.practicum.ewm.service.request.dto.EventRequestStatusUpdateResult;
@@ -20,6 +21,7 @@ import ru.practicum.ewm.service.user.model.User;
 import ru.practicum.ewm.service.user.service.UserService;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +33,7 @@ public class ParticipationService {
     private final EventService eventService;
     private final UserService userService;
     private final ModelMapper mapper = new ModelMapper();
+    Converter<Event, Long> eventToLongConverter = context -> context.getSource().getId();
 
     public Participation getRequestById(long requestId) {
         return participationRepository.findById(requestId)
@@ -149,12 +152,12 @@ public class ParticipationService {
         }
 
         Participation request = Participation.builder()
-                .created(LocalDateTime.now())
+                .created(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS))
                 .event(event)
                 .user(requester)
                 .status(newStatus)
                 .build();
-
+        mapper.typeMap(Event.class, Long.class).setConverter(eventToLongConverter);
         return mapper.map(participationRepository.save(request), ParticipationRequestDto.class);
     }
 
@@ -175,7 +178,7 @@ public class ParticipationService {
             }
             eventRepository.save(event);
         }
-
+        mapper.typeMap(Event.class, Long.class).setConverter(eventToLongConverter);
         return mapper.map(storageRequest, ParticipationRequestDto.class);
     }
 }
