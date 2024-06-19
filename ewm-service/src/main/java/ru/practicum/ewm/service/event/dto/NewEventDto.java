@@ -5,10 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.ewm.service.event.model.Location;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Data
 @NoArgsConstructor
@@ -16,6 +13,7 @@ import javax.validation.constraints.Size;
 public class NewEventDto {
     @NotEmpty
     @Size(min = 20, max = 2000)
+    @NotBlank
     private String annotation;
 
     @Positive
@@ -23,6 +21,7 @@ public class NewEventDto {
 
     @NotEmpty
     @Size(min = 20, max = 7000)
+    @NotBlank
     private String description;
 
     @NotEmpty
@@ -33,6 +32,7 @@ public class NewEventDto {
 
     private boolean paid = false;
 
+    @PositiveOrZero
     private int participantLimit = 0;
 
     private boolean requestModeration = true;
