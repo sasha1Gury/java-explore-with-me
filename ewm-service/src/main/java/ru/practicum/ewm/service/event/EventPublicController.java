@@ -10,6 +10,7 @@ import ru.practicum.ewm.service.event.dto.EventFullDto;
 import ru.practicum.ewm.service.event.dto.EventShortDto;
 import ru.practicum.ewm.service.event.model.EventDtoMapper;
 import ru.practicum.ewm.service.event.service.EventService;
+import ru.practicum.ewm.service.exceptions.EndBeforeStartException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Positive;
@@ -51,6 +52,12 @@ public class EventPublicController {
                                                   HttpServletRequest request) {
         String remoteIp = request.getRemoteAddr();
         String requestUri = request.getRequestURI();
+
+        if (rangeEnd != null && rangeStart != null) {
+            if (rangeEnd.isBefore(rangeStart)) {
+                throw new EndBeforeStartException("Ошибка в датах");
+            }
+        }
 
         log.info("Public get all events: text = {}, categoriesIdList = {}, paid = {}, rangeStart = {}, rangeEnd = {}, onlyAvailable = {}, sort = {}, from = {}, size = {}",
                 text, categoriesIdList, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
