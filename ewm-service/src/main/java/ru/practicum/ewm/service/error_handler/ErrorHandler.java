@@ -19,7 +19,11 @@ public class ErrorHandler {
     public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
 
 
-    @ExceptionHandler({ValidationException.class})
+    @ExceptionHandler({ValidationException.class,
+            NegativeParticipantsException.class,
+            EndBeforeStartException.class,
+            DateException.class,
+            ValidateException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleValidationException(final RuntimeException e) {
         log.info(e.getMessage());
