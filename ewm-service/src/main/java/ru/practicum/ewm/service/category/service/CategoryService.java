@@ -41,9 +41,9 @@ public class CategoryService {
     }
 
     public CategoryDto create(CategoryDto category) {
-        if(category.getName().length() > 50){
-            throw new ValidateException("Длина имени не должна превышать 50 символов");
-        }
+
+        if(category.getName().length() > 50) throw new ValidateException("Длина имени не должна превышать 50 символов");
+
         Category storageCategory;
         try {
             storageCategory = categoryRepository.save(mapper.map(category, Category.class));
@@ -57,9 +57,7 @@ public class CategoryService {
 
     public CategoryDto update(CategoryDto category, long categoryId) {
 
-        if(category.getName().length() > 50){
-            throw new ValidateException("Длина имени не должна превышать 50 символов");
-        }
+        if(category.getName().length() > 50) throw new ValidateException("Длина имени не должна превышать 50 символов");
 
         Category storageCategory;
 

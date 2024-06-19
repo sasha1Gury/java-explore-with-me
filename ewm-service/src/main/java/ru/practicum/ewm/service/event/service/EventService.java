@@ -86,27 +86,35 @@ public class EventService {
     public void validateUpdateFields(UpdateEventRequest request) {
 
         if(request.getParticipantLimit() != null) {
+
             if(request.getParticipantLimit() < 0) {
                 throw new NegativeParticipantsException("Количество участников не может быть отрицательно или не определено");
             }
+
         }
 
         if(request.getTitle() != null) {
+
             if(request.getTitle().length() < 3 || request.getTitle().length() > 120) {
                 throw new ValidateException("Ошибка в количестве символов в заголовке");
             }
+
         }
 
         if(request.getDescription() != null) {
+
             if(request.getDescription().length() < 20 || request.getDescription().length() > 7000) {
                 throw new ValidateException("Ошибка в количестве символов в описании");
             }
+
         }
 
         if(request.getAnnotation() != null) {
+
             if(request.getAnnotation().length() < 20 || request.getAnnotation().length() > 2000) {
                 throw new ValidateException("Ошибка в количестве символов в аннотации");
             }
+
         }
     }
 
