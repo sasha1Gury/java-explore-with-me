@@ -35,7 +35,7 @@ public final class ParticipationDtoMapper {
         if (participationList != null) {
             List<ParticipationRequestDto> participationRequestDtoList = new ArrayList<>();
             for (Participation participation : participationList) {
-                participationRequestDtoList.add(mapper.map(participation, ParticipationRequestDto.class));
+                participationRequestDtoList.add(toParticipationRequestDto(participation));
             }
             return participationRequestDtoList;
         } else {
