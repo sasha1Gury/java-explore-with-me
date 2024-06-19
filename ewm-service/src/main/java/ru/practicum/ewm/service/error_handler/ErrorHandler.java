@@ -23,7 +23,8 @@ public class ErrorHandler {
             NegativeParticipantsException.class,
             EndBeforeStartException.class,
             DateException.class,
-            ValidateException.class})
+            ValidateException.class,
+            CompilationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleValidationException(final RuntimeException e) {
         log.info(e.getMessage());

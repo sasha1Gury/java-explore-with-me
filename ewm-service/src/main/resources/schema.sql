@@ -50,7 +50,7 @@ CREATE TABLE compilations
 (
     compilation_id  BIGINT GENERATED ALWAYS AS IDENTITY (START WITH 1) NOT NULL,
     title           VARCHAR(128)                                       NOT NULL,
-    pinned          BOOLEAN                                            NOT NULL,
+    pinned          BOOLEAN                                            ,
     CONSTRAINT pk_compilations_compilation PRIMARY KEY (compilation_id),
     CONSTRAINT UQ_COMPILATION_TITLE UNIQUE (title)
 );

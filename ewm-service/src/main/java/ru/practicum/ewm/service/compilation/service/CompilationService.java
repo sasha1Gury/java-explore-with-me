@@ -11,6 +11,7 @@ import ru.practicum.ewm.service.compilation.dto.UpdateCompilationRequest;
 import ru.practicum.ewm.service.compilation.model.Compilation;
 import ru.practicum.ewm.service.compilation.repository.CompilationRepository;
 import ru.practicum.ewm.service.event.repository.EventRepository;
+import ru.practicum.ewm.service.exceptions.CompilationException;
 import ru.practicum.ewm.service.exceptions.CompilationNotFoundException;
 
 import java.util.HashSet;
@@ -48,6 +49,7 @@ public class CompilationService {
     }
 
     public CompilationDto create(NewCompilationDto newCompilationDto) {
+
         Compilation compilation = Compilation.builder()
                 .title(newCompilationDto.getTitle())
                 .pinned(newCompilationDto.getPinned())
@@ -56,7 +58,15 @@ public class CompilationService {
             compilation.setEvents(Set.copyOf(eventRepository.findByIdIn(List.copyOf(newCompilationDto.getEvents()))));
         }
 
+        validateCompilation(compilation);
+
         return mapper.map(compilationRepository.save(compilation), CompilationDto.class);
+    }
+
+    public void validateCompilation(Compilation compilation) {
+        if(compilation.getPinned() == null) compilation.setPinned(false);
+        if(compilation.getTitle().trim().isEmpty()) throw new CompilationException("Поле title не должен быть пустым");
+        if(compilation.getTitle().length() > 50) throw new CompilationException("Поле title не должно превышать по длине 50 символов");
     }
 
     public CompilationDto update(UpdateCompilationRequest updateRequest, long compilationId) {
@@ -72,6 +82,8 @@ public class CompilationService {
 
         if (updateRequest.getPinned() != null) compilation.setPinned(updateRequest.getPinned());
         if (updateRequest.getTitle() != null) compilation.setTitle(updateRequest.getTitle());
+
+        validateCompilation(compilation);
 
         return mapper.map(compilationRepository.save(compilation), CompilationDto.class);
     }

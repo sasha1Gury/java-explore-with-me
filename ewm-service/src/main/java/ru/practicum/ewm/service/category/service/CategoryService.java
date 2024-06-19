@@ -13,6 +13,7 @@ import ru.practicum.ewm.service.event.service.EventService;
 import ru.practicum.ewm.service.exceptions.CategoryHaveLinkedEventsException;
 import ru.practicum.ewm.service.exceptions.CategoryNameNotUniqueException;
 import ru.practicum.ewm.service.exceptions.CategoryNotFoundException;
+import ru.practicum.ewm.service.exceptions.ValidateException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,7 +27,7 @@ public class CategoryService {
 
     public CategoryDto getCategoryById(long categoryId) {
         Category category = categoryRepository.findById(categoryId)
-        .orElseThrow(() -> new CategoryNotFoundException("Категория " + categoryId + " не найдена"));
+                .orElseThrow(() -> new CategoryNotFoundException("Категория " + categoryId + " не найдена"));
 
         return mapper.map(category, CategoryDto.class);
     }
@@ -40,10 +41,14 @@ public class CategoryService {
     }
 
     public CategoryDto create(CategoryDto category) {
+        if(category.getName().length() > 50){
+            throw new ValidateException("Длина имени не должна превышать 50 символов");
+        }
         Category storageCategory;
         try {
             storageCategory = categoryRepository.save(mapper.map(category, Category.class));
         } catch (DataIntegrityViolationException e) {
+
             throw new CategoryNameNotUniqueException("Название категории не уникально");
         }
 
@@ -51,6 +56,11 @@ public class CategoryService {
     }
 
     public CategoryDto update(CategoryDto category, long categoryId) {
+
+        if(category.getName().length() > 50){
+            throw new ValidateException("Длина имени не должна превышать 50 символов");
+        }
+
         Category storageCategory;
 
         getCategoryById(categoryId);
