@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS participation_requests CASCADE ;
 CREATE TABLE users
 (
     user_id  BIGINT GENERATED ALWAYS AS IDENTITY (START WITH 1) NOT NULL,
-    name     VARCHAR(128)                                        NOT NULL,
+    name     VARCHAR(250)                                        NOT NULL,
     email    VARCHAR(128)                                        NOT NULL,
     CONSTRAINT pk_users_users PRIMARY KEY (user_id),
     CONSTRAINT UQ_USER_EMAIL UNIQUE (email)
