@@ -11,8 +11,7 @@ import ru.practicum.ewm.service.event.model.Event;
 import ru.practicum.ewm.service.event.model.EventState;
 import ru.practicum.ewm.service.event.repository.EventRepository;
 import ru.practicum.ewm.service.event.repository.EventRepositoryImpl;
-import ru.practicum.ewm.service.exceptions.EventNotFoundException;
-import ru.practicum.ewm.service.exceptions.EventUpdateException;
+import ru.practicum.ewm.service.exceptions.*;
 import ru.practicum.ewm.service.user.service.UserService;
 import ru.practicum.stat.client.StatisticClient;
 import ru.practicum.stat.common.dto.RecordStatisticDto;
@@ -39,12 +38,16 @@ public class EventService {
     }
 
     public EventFullDto getEventByIdPublic(long eventId, String requestUri, String remoteIp) {
+        StatisticClient statClient = new StatisticClient("http://localhost:9090");
         Event event = getEventById(eventId);
         if (event.getState() != EventState.PUBLISHED) {
             throw new EventNotFoundException("Событие " + eventId + " не найдено");
         }
 
         recordStatistics(requestUri, remoteIp);
+        event.setViews(statClient.getStats(event.getEventDate().minusDays(10),
+                        event.getEventDate().plusDays(10), List.of(requestUri), false).size());
+
         return mapper.map(event, EventFullDto.class);
     }
 
@@ -80,7 +83,36 @@ public class EventService {
         return eventRepositoryImpl.findAllEventsByFilterPublic(text, categoriesIdList, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
     }
 
+    public void validateUpdateFields(UpdateEventRequest request) {
+
+        if(request.getParticipantLimit() != null) {
+            if(request.getParticipantLimit() < 0) {
+                throw new NegativeParticipantsException("Количество участников не может быть отрицательно или не определено");
+            }
+        }
+
+        if(request.getTitle() != null) {
+            if(request.getTitle().length() < 3 || request.getTitle().length() > 120) {
+                throw new ValidateException("Ошибка в количестве символов в заголовке");
+            }
+        }
+
+        if(request.getDescription() != null) {
+            if(request.getDescription().length() < 20 || request.getDescription().length() > 7000) {
+                throw new ValidateException("Ошибка в количестве символов в описании");
+            }
+        }
+
+        if(request.getAnnotation() != null) {
+            if(request.getAnnotation().length() < 20 || request.getAnnotation().length() > 2000) {
+                throw new ValidateException("Ошибка в количестве символов в аннотации");
+            }
+        }
+    }
+
     public EventFullDto updateEventByAdmin(UpdateEventRequest updateRequest, long eventId) {
+        validateUpdateFields(updateRequest);
+
         Event storageEvent = getEventById(eventId);
 
         handleStateAction(updateRequest.getStateAction(), storageEvent);
@@ -109,7 +141,7 @@ public class EventService {
         LocalDateTime eventDate = LocalDateTime.parse(newEventDto.getEventDate(), DATE_TIME_FORMATTER)
                 .truncatedTo(ChronoUnit.SECONDS);
         if (eventDate.isBefore(LocalDateTime.now().plusHours(2))) {
-            throw new EventUpdateException("Дата начала изменяемого события должна быть не ранее чем за два часа от даты публикации");
+            throw new DateException("Дата начала изменяемого события должна быть не ранее чем за два часа от даты публикации");
         }
 
         Event event = Event.builder()
@@ -139,7 +171,10 @@ public class EventService {
     }
 
     public EventFullDto updateEventByInitiator(UpdateEventRequest eventRequest, long eventId, long initiatorId) {
+        validateUpdateFields(eventRequest);
+
         EventFullDto eventFullDto = getEventByIdAndInitiatorId(eventId, initiatorId);
+
         Event storageEvent = mapper.map(eventFullDto, Event.class);
 
         if (storageEvent.getState() == EventState.PUBLISHED) {
@@ -150,7 +185,7 @@ public class EventService {
             LocalDateTime eventRequestDate = LocalDateTime.parse(eventRequest.getEventDate(), DATE_TIME_FORMATTER)
                     .truncatedTo(ChronoUnit.SECONDS);
             if (eventRequestDate.isBefore(LocalDateTime.now().plusHours(2))) {
-                throw new EventUpdateException("Дата начала изменяемого события должна быть не ранее чем за два часа от даты публикации");
+                throw new DateException("Дата начала изменяемого события должна быть не ранее чем за два часа от даты публикации");
             }
             storageEvent.setEventDate(eventRequestDate);
         }
@@ -198,7 +233,7 @@ public class EventService {
 
     private void validateEventDate(LocalDateTime eventDate) {
         if (eventDate.isBefore(LocalDateTime.now().plusHours(1))) {
-            throw new EventUpdateException("Дата начала изменяемого события должна быть не ранее чем за час от даты публикации");
+            throw new DateException("Дата начала изменяемого события должна быть не ранее чем за час от даты публикации");
         }
     }
 
