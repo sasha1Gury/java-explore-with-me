@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
@@ -17,9 +16,9 @@ public class UserDto {
 
     @NotEmpty
     @NotBlank
-    @Min(2)
     private String name;
 
     @Email
+    @NotBlank
     private String email;
 }
