@@ -10,7 +10,7 @@ import ru.practicum.stat.common.dto.ViewStatisticDto;
 import ru.practicum.stat.common.dto.RecordStatisticDto;
 import ru.practicum.stat.server.service.StatServerService;
 
-import javax.xml.bind.ValidationException;
+import javax.validation.ValidationException;
 import java.time.LocalDateTime;
 import java.util.List;
 
