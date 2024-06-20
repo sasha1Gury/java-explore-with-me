@@ -23,10 +23,10 @@ public class UserService {
 
     public User saveUser(User user) {
         User user1;
-        if(user.getName().length() < 2 || user.getName().length() > 250) {
+        if (user.getName().length() < 2 || user.getName().length() > 250) {
             throw new ValidateException("Длина имени должна быть от 2 до 250 симвовлов");
         }
-        if(user.getEmail().length() < 6 || user.getEmail().length() > 254) {
+        if (user.getEmail().length() < 6 || user.getEmail().length() > 254) {
             throw new ValidateException("Длина имени должна быть от 2 до 250 симвовлов");
         }
         try {

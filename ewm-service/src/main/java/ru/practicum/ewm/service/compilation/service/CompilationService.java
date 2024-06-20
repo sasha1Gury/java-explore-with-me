@@ -65,9 +65,9 @@ public class CompilationService {
 
     public void validateCompilation(Compilation compilation) {
 
-        if(compilation.getPinned() == null) compilation.setPinned(false);
-        if(compilation.getTitle().trim().isEmpty()) throw new CompilationException("Поле title не должен быть пустым");
-        if(compilation.getTitle().length() > 50) throw new CompilationException("Поле title не должно превышать по длине 50 символов");
+        if (compilation.getPinned() == null) compilation.setPinned(false);
+        if (compilation.getTitle().trim().isEmpty()) throw new CompilationException("Поле title не должен быть пустым");
+        if (compilation.getTitle().length() > 50) throw new CompilationException("Поле title не должно превышать по длине 50 символов");
     }
 
     public CompilationDto update(UpdateCompilationRequest updateRequest, long compilationId) {
