@@ -6,6 +6,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ru.practicum.ewm.service.exceptions.UserEmailNotUniqueException;
 import ru.practicum.ewm.service.exceptions.ValidateException;
 import ru.practicum.ewm.service.user.dto.UserDto;
 import ru.practicum.ewm.service.user.model.User;
@@ -32,7 +33,7 @@ public class UserService {
         try {
             user1 = userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
-            throw new RuntimeException("e-mail не уникален");
+            throw new UserEmailNotUniqueException("e-mail не уникален");
         }
         return user1;
     }
