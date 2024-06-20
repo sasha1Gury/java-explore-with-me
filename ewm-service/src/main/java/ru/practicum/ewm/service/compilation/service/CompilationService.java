@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class CompilationService {
     private final CompilationRepository compilationRepository;
     private final EventRepository eventRepository;
-    private final ModelMapper mapper = new ModelMapper();
+    private final ModelMapper mapper;
 
     public CompilationDto getCompilationById(long compilationId) {
         Compilation compilation = compilationRepository.findById(compilationId)

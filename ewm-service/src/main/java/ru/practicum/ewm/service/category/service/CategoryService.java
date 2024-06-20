@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final EventService eventService;
-    private final ModelMapper mapper = new ModelMapper();
+    private final ModelMapper mapper;
 
     public CategoryDto getCategoryById(long categoryId) {
         Category category = categoryRepository.findById(categoryId)

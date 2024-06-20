@@ -27,9 +27,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ru.practicum.ewm.service.event.service.EventService.localDateTimeToStringConverter;
-import static ru.practicum.ewm.service.event.service.EventService.stringToLocalDateTimeConverter;
-
 @Service
 @RequiredArgsConstructor
 public class ParticipationService {
@@ -37,29 +34,7 @@ public class ParticipationService {
     private final EventRepository eventRepository;
     private final EventService eventService;
     private final UserService userService;
-    private final ModelMapper mapper = new ModelMapper();
-
-    public static final Converter<User, Long> userLongConverter = new AbstractConverter<>() {
-        @Override
-        protected Long convert(User source) {
-            return source.getId();
-        }
-    };
-
-    public static final Converter<Event, Long> eventLongConverter = new AbstractConverter<>() {
-        @Override
-        protected Long convert(Event source) {
-            return source.getId();
-        }
-    };
-
-    public static final PropertyMap<Participation, ParticipationRequestDto> propertyMap = new PropertyMap<>() {
-        @Override
-        protected void configure() {
-            using(userLongConverter).map(source.getUser(), destination.getRequester());
-        }
-    };
-
+    private final ModelMapper mapper;
 
     public Participation getRequestById(long requestId) {
         return participationRepository.findById(requestId)
@@ -90,8 +65,6 @@ public class ParticipationService {
 
     public EventRequestStatusUpdateResult updateRequestsStatus(EventRequestStatusUpdateRequest updateRequest, long eventId, long initiatorId) {
         EventFullDto eventFullDto = eventService.getEventByIdAndInitiatorId(eventId, initiatorId);
-        mapper.addConverter(localDateTimeToStringConverter);
-        mapper.addConverter(stringToLocalDateTimeConverter);
         Event event = mapper.map(eventFullDto, Event.class);
         String newStatus = updateRequest.getStatus();
         int participantLimit = event.getParticipantLimit();
@@ -185,9 +158,6 @@ public class ParticipationService {
                 .user(requester)
                 .status(newStatus)
                 .build();
-        mapper.addConverter(eventLongConverter);
-        mapper.addConverter(userLongConverter);
-        mapper.addMappings(propertyMap);
         return mapper.map(participationRepository.save(request), ParticipationRequestDto.class);
     }
 

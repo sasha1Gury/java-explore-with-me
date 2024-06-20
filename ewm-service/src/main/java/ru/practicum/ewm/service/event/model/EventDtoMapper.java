@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static ru.practicum.ewm.service.event.service.EventService.localDateTimeToStringConverter;
-import static ru.practicum.ewm.service.event.service.EventService.stringToLocalDateTimeConverter;
+import static ru.practicum.ewm.service.configuration.ModelMapperConfig.localDateTimeToStringConverter;
+import static ru.practicum.ewm.service.configuration.ModelMapperConfig.stringToLocalDateTimeConverter;
 
 @NoArgsConstructor
 public class EventDtoMapper {
