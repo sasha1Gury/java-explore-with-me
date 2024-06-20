@@ -36,14 +36,14 @@ public class EventService {
     private final UserService userService;
     private final ModelMapper mapper = new ModelMapper();
 
-    public static Converter<LocalDateTime, String> localDateTimeToStringConverter = new AbstractConverter<LocalDateTime, String>() {
+    public static final Converter<LocalDateTime, String> localDateTimeToStringConverter = new AbstractConverter<LocalDateTime, String>() {
         @Override
         protected String convert(LocalDateTime source) {
             return source == null ? null : source.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         }
     };
 
-    public static Converter<String, LocalDateTime> stringToLocalDateTimeConverter = new AbstractConverter<String, LocalDateTime>() {
+    public static final Converter<String, LocalDateTime> stringToLocalDateTimeConverter = new AbstractConverter<String, LocalDateTime>() {
         @Override
         protected LocalDateTime convert(String source) {
             try {
