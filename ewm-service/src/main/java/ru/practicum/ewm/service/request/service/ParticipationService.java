@@ -53,7 +53,7 @@ public class ParticipationService {
         }
     };
 
-    public static PropertyMap<Participation, ParticipationRequestDto> propertyMap = new PropertyMap<>() {
+    public static final PropertyMap<Participation, ParticipationRequestDto> propertyMap = new PropertyMap<>() {
         @Override
         protected void configure() {
             using(userLongConverter).map(source.getUser(), destination.getRequester());
