@@ -25,6 +25,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static ru.practicum.ewm.service.event.service.EventService.localDateTimeToStringConverter;
+import static ru.practicum.ewm.service.event.service.EventService.stringToLocalDateTimeConverter;
+
 @Service
 @RequiredArgsConstructor
 public class ParticipationService {
@@ -33,6 +36,7 @@ public class ParticipationService {
     private final EventService eventService;
     private final UserService userService;
     private final ModelMapper mapper = new ModelMapper();
+
     Converter<Event, Long> eventToLongConverter = context -> context.getSource().getId();
 
     public Participation getRequestById(long requestId) {
@@ -64,6 +68,8 @@ public class ParticipationService {
 
     public EventRequestStatusUpdateResult updateRequestsStatus(EventRequestStatusUpdateRequest updateRequest, long eventId, long initiatorId) {
         EventFullDto eventFullDto = eventService.getEventByIdAndInitiatorId(eventId, initiatorId);
+        mapper.addConverter(localDateTimeToStringConverter);
+        mapper.addConverter(stringToLocalDateTimeConverter);
         Event event = mapper.map(eventFullDto, Event.class);
         String newStatus = updateRequest.getStatus();
         int participantLimit = event.getParticipantLimit();
