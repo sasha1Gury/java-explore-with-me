@@ -1,6 +1,8 @@
 package ru.practicum.ewm.service.event.service;
 
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.AbstractConverter;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +19,8 @@ import ru.practicum.stat.client.StatisticClient;
 import ru.practicum.stat.common.dto.RecordStatisticDto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +35,25 @@ public class EventService {
     private final CategoryRepository categoryRepository;
     private final UserService userService;
     private final ModelMapper mapper = new ModelMapper();
+
+    public static Converter<LocalDateTime, String> localDateTimeToStringConverter = new AbstractConverter<LocalDateTime, String>() {
+        @Override
+        protected String convert(LocalDateTime source) {
+            return source == null ? null : source.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        }
+    };
+
+    public static Converter<String, LocalDateTime> stringToLocalDateTimeConverter = new AbstractConverter<String, LocalDateTime>() {
+        @Override
+        protected LocalDateTime convert(String source) {
+            try {
+                return source == null ? null : LocalDateTime.parse(source, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            } catch (DateTimeParseException e) {
+                System.err.println("Error parsing date: " + e.getMessage());
+                return null;
+            }
+        }
+    };
 
     public Event getEventById(long eventId) {
         return eventRepository.findById(eventId)
@@ -145,6 +168,8 @@ public class EventService {
         if (eventDate.isBefore(LocalDateTime.now().plusHours(2))) {
             throw new DateException("Дата начала изменяемого события должна быть не ранее чем за два часа от даты публикации");
         }
+        mapper.addConverter(localDateTimeToStringConverter);
+        mapper.addConverter(stringToLocalDateTimeConverter);
 
         Event event = Event.builder()
                 .category(categoryRepository.getReferenceById(newEventDto.getCategory()))
