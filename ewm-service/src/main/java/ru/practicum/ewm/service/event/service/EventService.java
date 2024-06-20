@@ -38,7 +38,7 @@ public class EventService {
     }
 
     public EventFullDto getEventByIdPublic(long eventId, String requestUri, String remoteIp) {
-        StatisticClient statClient = new StatisticClient("http://localhost:9090");
+        StatisticClient statClient = new StatisticClient("http://ewm-stat-server:9090");
         Event event = getEventById(eventId);
         if (event.getState() != EventState.PUBLISHED) {
             throw new EventNotFoundException("Событие " + eventId + " не найдено");
@@ -274,7 +274,7 @@ public class EventService {
     }
 
     private void recordStatistics(String requestUri, String remoteIp) {
-        StatisticClient statClient = new StatisticClient("http://localhost:9090");
+        StatisticClient statClient = new StatisticClient("http://ewm-stat-server:9090");
         RecordStatisticDto stat = RecordStatisticDto.builder()
                 .app("ewm-main-service")
                 .uri(requestUri)
