@@ -69,10 +69,8 @@ public class EventRepositoryImpl {
 
         List<Predicate> predicates = new ArrayList<>();
 
-        //это публичный эндпоинт, соответственно в выдаче должны быть только опубликованные события
         predicates.add(cb.equal(root.get("state").as(String.class), EventState.PUBLISHED.name()));
 
-        //текстовый поиск (по аннотации и подробному описанию) должен быть без учета регистра букв
         if (text != null && !text.isEmpty()) {
             predicates.add(
                     cb.or(
@@ -97,7 +95,7 @@ public class EventRepositoryImpl {
             predicates.add(cb.lessThanOrEqualTo(root.get("eventDate"), rangeEnd));
         }
 
-        //если в запросе не указан диапазон дат [rangeStart-rangeEnd], то нужно выгружать события, которые произойдут позже текущей даты и времени
+
         if (rangeStart == null && rangeEnd == null) {
             predicates.add(cb.greaterThan(root.get("eventDate"), LocalDateTime.now()));
         }
