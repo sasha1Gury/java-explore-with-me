@@ -274,7 +274,7 @@ public class EventService {
     }
 
     private void recordStatistics(String requestUri, String remoteIp) {
-        StatisticClient statClient = new StatisticClient("http://ewm-stat-server:9090");
+        StatisticClient statClient = new StatisticClient("http://localhost:9090");
         RecordStatisticDto stat = RecordStatisticDto.builder()
                 .app("ewm-main-service")
                 .uri(requestUri)
