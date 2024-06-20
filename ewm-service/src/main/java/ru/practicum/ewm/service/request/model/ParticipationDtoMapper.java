@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static ru.practicum.ewm.service.error_handler.ErrorHandler.DATE_TIME_FORMATTER;
-
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ParticipationDtoMapper {
     private static final ModelMapper mapper = new ModelMapper();
