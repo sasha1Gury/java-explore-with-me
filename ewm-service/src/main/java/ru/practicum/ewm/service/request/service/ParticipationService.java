@@ -1,10 +1,7 @@
 package ru.practicum.ewm.service.request.service;
 
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.AbstractConverter;
-import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Service;
 import ru.practicum.ewm.service.event.dto.EventFullDto;
 import ru.practicum.ewm.service.event.model.Event;
