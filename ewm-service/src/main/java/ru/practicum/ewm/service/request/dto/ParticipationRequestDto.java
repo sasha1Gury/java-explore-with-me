@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -12,11 +14,11 @@ import lombok.NoArgsConstructor;
 public class ParticipationRequestDto {
     private long id;
 
-    private String created;
+    private LocalDateTime created;
 
-    private long event;
+    private Long event;
 
-    private long requester;
+    private Long requester;
 
     private String status;
 }

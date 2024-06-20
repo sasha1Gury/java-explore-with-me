@@ -1,8 +1,10 @@
 package ru.practicum.ewm.service.request.service;
 
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.AbstractConverter;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Service;
 import ru.practicum.ewm.service.event.dto.EventFullDto;
 import ru.practicum.ewm.service.event.model.Event;
@@ -37,7 +39,27 @@ public class ParticipationService {
     private final UserService userService;
     private final ModelMapper mapper = new ModelMapper();
 
-    Converter<Event, Long> eventToLongConverter = context -> context.getSource().getId();
+    public static final Converter<User, Long> userLongConverter = new AbstractConverter<>() {
+        @Override
+        protected Long convert(User source) {
+            return source.getId();
+        }
+    };
+
+    public static final Converter<Event, Long> eventLongConverter = new AbstractConverter<>() {
+        @Override
+        protected Long convert(Event source) {
+            return source.getId();
+        }
+    };
+
+    public static PropertyMap<Participation, ParticipationRequestDto> propertyMap = new PropertyMap<>() {
+        @Override
+        protected void configure() {
+            using(userLongConverter).map(source.getUser(), destination.getRequester());
+        }
+    };
+
 
     public Participation getRequestById(long requestId) {
         return participationRepository.findById(requestId)
@@ -163,7 +185,9 @@ public class ParticipationService {
                 .user(requester)
                 .status(newStatus)
                 .build();
-        mapper.typeMap(Event.class, Long.class).setConverter(eventToLongConverter);
+        mapper.addConverter(eventLongConverter);
+        mapper.addConverter(userLongConverter);
+        mapper.addMappings(propertyMap);
         return mapper.map(participationRepository.save(request), ParticipationRequestDto.class);
     }
 
@@ -184,7 +208,6 @@ public class ParticipationService {
             }
             eventRepository.save(event);
         }
-        mapper.typeMap(Event.class, Long.class).setConverter(eventToLongConverter);
         return mapper.map(storageRequest, ParticipationRequestDto.class);
     }
 }

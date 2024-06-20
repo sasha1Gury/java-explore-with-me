@@ -19,7 +19,7 @@ public final class ParticipationDtoMapper {
         if (participation != null) {
             return ParticipationRequestDto.builder()
                     .id(participation.getId())
-                    .created(participation.getCreated().format(DATE_TIME_FORMATTER))
+                    .created(participation.getCreated())
                     .requester(participation.getUser().getId())
                     .event(participation.getEvent().getId())
                     .status(participation.getStatus())
