@@ -27,4 +27,16 @@ public class ErrorHandler {
                 .timestamp(LocalDateTime.now().format(DATE_TIME_FORMATTER))
                 .build();
     }
+
+    @ExceptionHandler({Throwable.class})
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleThrowable(final Throwable e) {
+        log.info(e.getMessage());
+        return ErrorResponse.builder()
+                .status("INTERNAL_SERVER_ERROR")
+                .reason("error")
+                .message(e.getMessage())
+                .timestamp(LocalDateTime.now().format(DATE_TIME_FORMATTER))
+                .build();
+    }
 }
