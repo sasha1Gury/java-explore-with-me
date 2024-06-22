@@ -18,7 +18,7 @@ import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static ru.practicum.ewm.service.error_handler.ErrorHandler.DATE_TIME_FORMAT;
+import static ru.practicum.ewm.service.errorHandler.ErrorHandler.DATE_TIME_FORMAT;
 
 @RestController
 @RequestMapping(path = "/events")

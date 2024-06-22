@@ -1,4 +1,4 @@
-package ru.practicum.ewm.service.error_handler;
+package ru.practicum.stat.server.errorHandler;
 
 import lombok.Builder;
 import lombok.Data;

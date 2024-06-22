@@ -21,7 +21,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ru.practicum.ewm.service.error_handler.ErrorHandler.DATE_TIME_FORMATTER;
+import static ru.practicum.ewm.service.errorHandler.ErrorHandler.DATE_TIME_FORMATTER;
 
 @Service
 @RequiredArgsConstructor
