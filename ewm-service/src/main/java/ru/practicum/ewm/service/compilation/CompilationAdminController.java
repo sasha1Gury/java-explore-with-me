@@ -30,7 +30,7 @@ public class CompilationAdminController {
 
     @PatchMapping("/{compilationId}")
     @ResponseStatus(HttpStatus.OK)
-    public CompilationDto update(@RequestBody UpdateCompilationRequest updateCompilationRequest,
+    public CompilationDto update(@Valid @RequestBody UpdateCompilationRequest updateCompilationRequest,
                                  @Positive @PathVariable long compilationId) {
         log.info("Admin update compilation: {}, compilationId = {}", updateCompilationRequest, compilationId);
         return compilationService.update(updateCompilationRequest, compilationId);

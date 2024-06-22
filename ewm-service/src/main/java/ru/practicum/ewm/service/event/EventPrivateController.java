@@ -57,7 +57,7 @@ public class EventPrivateController {
 
     @PatchMapping("/{userId}/events/{eventId}")
     @ResponseStatus(HttpStatus.OK)
-    public EventFullDto updateEventByInitiator(@RequestBody UpdateEventRequest updateEventUserRequest,
+    public EventFullDto updateEventByInitiator(@Valid @RequestBody UpdateEventRequest updateEventUserRequest,
                                                @Positive @PathVariable long userId,
                                                @Positive @PathVariable long eventId) {
         log.info("Update user event: userId = {}, eventId = {}, {}", userId, eventId, updateEventUserRequest);

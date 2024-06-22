@@ -9,6 +9,7 @@ import ru.practicum.ewm.service.event.dto.EventShortDto;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
@@ -25,5 +26,6 @@ public class CompilationDto {
     private Boolean pinned;
 
     @NotEmpty
+    @Size(max = 50, message = "Поле title не должно превышать по длине 50 символов")
     private String title;
 }

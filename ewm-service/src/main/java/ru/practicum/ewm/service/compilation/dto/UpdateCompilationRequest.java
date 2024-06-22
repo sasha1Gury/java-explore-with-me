@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Data
@@ -14,5 +15,6 @@ public class UpdateCompilationRequest {
 
     private Boolean pinned;
 
+    @Size(max = 50, message = "Поле title не должно превышать по длине 50 символов")
     private String title;
 }
