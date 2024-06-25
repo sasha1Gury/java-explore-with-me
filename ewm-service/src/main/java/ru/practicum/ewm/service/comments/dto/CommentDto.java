@@ -21,7 +21,6 @@ public class CommentDto {
     private Long author;
 
     @NotEmpty
-    @NotBlank
     @Size(min = 5, max = 10000, message = "Текст комментария должен быть от 5 до 10000 символов")
     private String text;
 

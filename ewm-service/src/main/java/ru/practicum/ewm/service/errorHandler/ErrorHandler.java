@@ -76,8 +76,7 @@ public class ErrorHandler {
                 .build();
     }
 
-    @ExceptionHandler({NullPointerException.class,
-            IllegalArgumentException.class,
+    @ExceptionHandler({IllegalArgumentException.class,
             EntityNotFoundException.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse serverExceptionHandler(RuntimeException e) {
