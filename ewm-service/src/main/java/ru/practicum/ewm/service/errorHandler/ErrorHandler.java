@@ -24,7 +24,8 @@ public class ErrorHandler {
             EndBeforeStartException.class,
             DateException.class,
             ValidateException.class,
-            CompilationException.class})
+            CompilationException.class,
+            CommentException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleValidationException(final RuntimeException e) {
         log.info(e.getMessage());
@@ -40,7 +41,8 @@ public class ErrorHandler {
             CompilationNotFoundException.class,
             EventNotFoundException.class,
             UserNotFoundException.class,
-            ParticipationRequestNotFoundException.class})
+            ParticipationRequestNotFoundException.class,
+            CommentNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFoundException(final RuntimeException e) {
         log.info(e.getMessage());
@@ -61,7 +63,8 @@ public class ErrorHandler {
             ParticipationRequestInvalidStateException.class,
             ParticipationRequestLimitException.class,
             ParticipationRequestLimitReachedException.class,
-            UserEmailNotUniqueException.class})
+            UserEmailNotUniqueException.class,
+            AuthorException.class})
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleUserEmailNotUniqueException(final RuntimeException e) {
         log.info(e.getMessage());
@@ -73,8 +76,7 @@ public class ErrorHandler {
                 .build();
     }
 
-    @ExceptionHandler({NullPointerException.class,
-            IllegalArgumentException.class,
+    @ExceptionHandler({IllegalArgumentException.class,
             EntityNotFoundException.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse serverExceptionHandler(RuntimeException e) {
